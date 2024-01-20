@@ -7,3 +7,4 @@ let rollback = 3;
 const screens = 4;
 const screenPrice = 5;
 const fullPrice = 6;
+let a;
