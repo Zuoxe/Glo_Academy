@@ -54,14 +54,3 @@ if (fullPrice > 30000) {
     console.log("Что-то пошла не так");
 }
 
-// console.log(typeof title);
-// console.log(typeof fullPrice);
-// console.log(typeof adaptive);
-// console.log(screens.length);
-// console.log("Cost of screen layout:", screenPrice + " Dollars/Rubles/Yuan/Hryvnia");
-// console.log("Website development cost: ", fullPrice + " Dollars/Rubles/Yuan/Hryvnia");
-// console.log(screens.toLocaleLowerCase().split());
-
-// fullPrice = fullPrice * (rollback / 100);
-
-// console.log(fullPrice);
