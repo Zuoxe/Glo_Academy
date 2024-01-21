@@ -11,6 +11,8 @@ let servicePrice2 = + prompt('Сколько это будет стоить?');
 let rollback = 50;
 let AllServicePrices;
 let fullPrice;
+let servicePercentPrice;
+
 
 const getAllServicePrices = function (serPrice1, serPrice2) {
     return serPrice1 + serPrice2;
@@ -21,33 +23,40 @@ function getFullPrice(srcnprice, allprices) {
 }
 
 function getTitle(str) {
-    return str[0].toUpperCase() + str.slice(1);
+    return str[0].toUpperCase() + str.slice(1).toLowerCase();
+    console.log(typeof str);
 }
 
-fullPrice = getFullPrice(screenPrice, AllServicePrices)
-if (fullPrice >= 30000) {
-    console.log("Цена со скидкой 30% ");
-} else if (15000 <= fullPrice && fullPrice < 30000) {
-    console.log("Цена со скидкой 5% ");
-} else if (fullPrice >= 0 && fullPrice <= 15000) {
-    console.log("Скидка не предусмотрена");
-} else if (fullPrice < 0) {
-    console.log("Что-то пошло не так");
+function getServicePercentPrices(fullPrice, rollback) {
+    return fullPrice - rollback;
+}
+
+const getPercent = function (price) {
+
+    if (price > 30000) {
+        return "Цена со скидкой 30% ";
+    } else if (15000 <= price && price < 30000) {
+        return "Цена со скидкой 5% ";
+    } else if (price >= 0 && price <= 15000) {
+        return "Скидка не предусмотрена";
+    } else if (price < 0) {
+        return "Что-то пошло не так";
+    }
 }
 
 AllServicePrices = getAllServicePrices(servicePrice1, servicePrice2);
-
+fullPrice = getFullPrice(screenPrice, AllServicePrices)
+servicePercentPrice = getServicePercentPrices(fullPrice, rollback);
 title = getTitle(title);
 
-console.log(title);
-console.log(screens);
-console.log(screenPrice);
-console.log(adaptive);
-console.log(service1);
-console.log(servicePrice1);
-console.log(service2);
-console.log(servicePrice2);
+console.log(getPercent(fullPrice));
 
+console.log(title);
+console.log(typeof screenPrice);
+console.log(typeof adaptive);
+
+
+console.log("Стоймссть верстки экранов " + screenPrice + "рублей/долларов/гривней/юаней");
 console.log("Итоговая стоимость работы: " + fullPrice);
-// console.log("Итоговая стоимость: " + servicePercentPrice);
 console.log("Стоймость доп услуг: " + AllServicePrices);
+console.log("Итоговая стоимость с вычетом: " + servicePercentPrice);
