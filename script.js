@@ -54,7 +54,7 @@ const appData = {
     },
 
     getFullPrice: function (srcnprice, allprices) {
-        return allprices + srcnprice;
+        return Number(allprices) + Number(srcnprice);
     },
 
     getTitle: function (str) {
@@ -85,18 +85,21 @@ const appData = {
         appData.fullPrice = this.getFullPrice(appData.screenPrice, appData.AllServicePrices);
         appData.servicePercentPrice = this.getServicePercentPrices();
         appData.title = this.getTitle(appData.title);
+
         this.logger();
     },
 
     logger: function () {
         console.log("Информация о проекте:");
-        for (let prop in appData) {
-            if (typeof appData[prop] !== "function") {
-                console.log(`${prop}: ${appData[prop]}`);
+
+        for (let key in appData) {
+            if (typeof appData[key] !== "function") {
+                console.log(`${key}: ${appData[key]}`);
             }
         }
 
         console.log("Методы объекта appData:");
+
         for (let prop in appData) {
             if (typeof appData[prop] === "function") {
                 console.log(prop);
@@ -106,27 +109,3 @@ const appData = {
 }
 
 appData.start();
-
-
-
-
-
-// start.asking();
-
-// AllServicePrices = getAllServicePrices();
-// fullPrice = getFullPrice(screenPrice, AllServicePrices)
-// servicePercentPrice = getServicePercentPrices(fullPrice, rollback);
-// title = getTitle(title);
-
-// console.log(getPercent(fullPrice));
-
-// console.log(title);
-// console.log(screenPrice);
-// console.log(typeof screenPrice);
-// console.log(typeof adaptive);
-
-
-// console.log("Стоймссть верстки экранов " + screenPrice + "рублей/долларов/гривней/юаней");
-// console.log("Итоговая стоимость работы: " + fullPrice);
-// console.log("Стоймость доп услуг: " + AllServicePrices);
-// console.log("Итоговая стоимость с вычетом: " + servicePercentPrice);
