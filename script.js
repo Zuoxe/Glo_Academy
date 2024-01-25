@@ -1,95 +1,132 @@
 'use strict';
 
-let title;
-let screens;
-let screenPrice;
-let adaptive;
 
-let service1;
-let service2;
+const appData = {
+    title: "",
+    screens: "",
+    screenPrice: 0,
+    adaptive: true,
+    rollback: 50,
+    AllServicePrices: 0,
+    fullPrice: 0,
+    servicePercentPrice: 0,
+    service1: "",
+    service2: "",
 
-let rollback = 50;
-let AllServicePrices;
-let fullPrice;
-let servicePercentPrice;
+    isNumber: function (num) {
 
-const isNumber = function (num) {
+        return !isNaN(parseFloat(num)) && isFinite(num);
+    },
 
-    return !isNaN(parseFloat(num)) && isFinite(num);
-}
+    asking: function () {
 
-const asking = function () {
+        appData.title = prompt('Как называеться ваш проект:?', "Калкулятор");
+        appData.screens = prompt('Какие типы экранов нужно разработать?', "Простые");
+        appData.screenPrice = prompt('Сколько будет стоить данная работа ?').trim();
 
-    title = prompt('Как называеться ваш проект:?', "Калкулятор");
-    screens = prompt('Какие типы экранов нужно разработать?', "Простые");
-    screenPrice = prompt('Сколько будет стоить данная работа ?').trim();
+        do {
+            appData.screenPrice = prompt('Сколько будет стоить данная работа ?').trim();
+        } while (!appData.isNumber(appData.screenPrice));
 
-    do {
-        screenPrice = prompt('Сколько будет стоить данная работа ?').trim();
-    } while (!isNumber(screenPrice));
+        appData.adaptive = confirm('Нужен ли адаптив на сайте? Да/Нет');
+    },
 
-    adaptive = confirm('Нужен ли адаптив на сайте? Да/Нет');
-}
+    getAllServicePrices: function () {
 
-const getAllServicePrices = function () {
+        let sum = 0;
 
-    let sum = 0;
+        for (let i = 0; i < 2; i++) {
+            let price = 0;
+            if (i === 0) {
+                appData.service1 = prompt('Какой дополнительный тип услуги нужен?');
+            } else if (i === 1) {
+                appData.service2 = prompt('Какой дополнительный тип услуги нужен?№2');
+            }
 
-    for (let i = 0; i < 2; i++) {
-        if (i === 0) {
-            service1 = prompt('Какой дополнительный тип услуги нужен?');
-        } else if (i === 1) {
-            service2 = prompt('Какой дополнительный тип услуги нужен?№2');
+            do {
+                price = prompt("Сколько это будет стоить?");
+            } while (!appData.isNumber(price));
+
+            sum += +price;
         }
 
-        sum += +prompt("Сколько это будет стоить?");
+        return sum;
+    },
+
+    getFullPrice: function (srcnprice, allprices) {
+        return allprices + srcnprice;
+    },
+
+    getTitle: function (str) {
+        return str.trim()[0].toUpperCase() + str.trim().slice(1).toLowerCase();
+
+    },
+
+    getServicePercentPrices: function () {
+        return appData.fullPrice - appData.rollback;
+    },
+
+    getPercent: function (price) {
+
+        if (price > 30000) {
+            return "Цена со скидкой 30% ";
+        } else if (15000 <= price && price < 30000) {
+            return "Цена со скидкой 5% ";
+        } else if (price >= 0 && price <= 15000) {
+            return "Скидка не предусмотрена";
+        } else if (price < 0) {
+            return "Что-то пошло не так";
+        }
+    },
+
+    start: function () {
+        appData.asking();
+        appData.AllServicePrices = this.getAllServicePrices();
+        appData.fullPrice = this.getFullPrice(appData.screenPrice, appData.AllServicePrices);
+        appData.servicePercentPrice = this.getServicePercentPrices();
+        appData.title = this.getTitle(appData.title);
+        this.logger();
+    },
+
+    logger: function () {
+        console.log("Информация о проекте:");
+        for (let prop in appData) {
+            if (typeof appData[prop] !== "function") {
+                console.log(`${prop}: ${appData[prop]}`);
+            }
+        }
+
+        console.log("Методы объекта appData:");
+        for (let prop in appData) {
+            if (typeof appData[prop] === "function") {
+                console.log(prop);
+            }
+        }
     }
-
-    return sum;
 }
 
-function getFullPrice(srcnprice, allprices) {
-    return allprices + srcnprice;
-}
-
-function getTitle(str) {
-    return str[0].toUpperCase() + str.slice(1).toLowerCase();
-    console.log(typeof str);
-}
-
-function getServicePercentPrices(fullPrice, rollback) {
-    return fullPrice - rollback;
-}
-
-const getPercent = function (price) {
-
-    if (price > 30000) {
-        return "Цена со скидкой 30% ";
-    } else if (15000 <= price && price < 30000) {
-        return "Цена со скидкой 5% ";
-    } else if (price >= 0 && price <= 15000) {
-        return "Скидка не предусмотрена";
-    } else if (price < 0) {
-        return "Что-то пошло не так";
-    }
-}
-
-asking();
-
-AllServicePrices = getAllServicePrices();
-fullPrice = getFullPrice(screenPrice, AllServicePrices)
-servicePercentPrice = getServicePercentPrices(fullPrice, rollback);
-title = getTitle(title);
-
-console.log(getPercent(fullPrice));
-
-console.log(title);
-console.log(screenPrice);
-console.log(typeof screenPrice);
-console.log(typeof adaptive);
+appData.start();
 
 
-console.log("Стоймссть верстки экранов " + screenPrice + "рублей/долларов/гривней/юаней");
-console.log("Итоговая стоимость работы: " + fullPrice);
-console.log("Стоймость доп услуг: " + AllServicePrices);
-console.log("Итоговая стоимость с вычетом: " + servicePercentPrice);
+
+
+
+// start.asking();
+
+// AllServicePrices = getAllServicePrices();
+// fullPrice = getFullPrice(screenPrice, AllServicePrices)
+// servicePercentPrice = getServicePercentPrices(fullPrice, rollback);
+// title = getTitle(title);
+
+// console.log(getPercent(fullPrice));
+
+// console.log(title);
+// console.log(screenPrice);
+// console.log(typeof screenPrice);
+// console.log(typeof adaptive);
+
+
+// console.log("Стоймссть верстки экранов " + screenPrice + "рублей/долларов/гривней/юаней");
+// console.log("Итоговая стоимость работы: " + fullPrice);
+// console.log("Стоймость доп услуг: " + AllServicePrices);
+// console.log("Итоговая стоимость с вычетом: " + servicePercentPrice);
